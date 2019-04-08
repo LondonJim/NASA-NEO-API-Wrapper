@@ -29,7 +29,7 @@ module NEO
       def retrieve_neo
         buffer = buffer_url.read
         result = JSON.parse(buffer)
-        result['near_earth_objects']["#{@config.current_date}"][0]
+        result["near_earth_objects"]["#{@config.current_date}"][0]
       end
 
       def buffer_url
