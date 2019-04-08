@@ -12,8 +12,16 @@ module NEO
         retrieve_neo["name"]
       end
 
+      def estimated_diameter
+        retrieve_neo["estimated_diameter"]
+      end
+
       def miss_distance
         retrieve_neo["close_approach_data"][0]["miss_distance"]
+      end
+
+      def velocity
+        retrieve_neo["close_approach_data"][0]["relative_velocity"]
       end
 
       private
