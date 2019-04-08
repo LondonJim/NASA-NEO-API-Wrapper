@@ -12,6 +12,10 @@ module NEO
         retrieve_neo["name"]
       end
 
+      def miss_distance_kilometers
+        retrieve_neo["close_approach_data"][0]["miss_distance"]["kilometers"].to_i
+      end
+
       private
 
       def retrieve_neo
