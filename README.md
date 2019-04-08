@@ -4,6 +4,8 @@ Gives details on the closest Near Earth Object of the day.
 
 ## Installation
 
+Uses `Ruby 2.6.1`
+
 `bundle`
 
 ## Instructions
@@ -57,3 +59,10 @@ client.velocity
 
 eg. {"kilometers_per_second"=>"14.488889894", "kilometers_per_hour"=>"52160.0036184644", "miles_per_hour"=>"32410.1978039286"}
 ```
+
+## Testing
+
+Uses `RSpec 3.8`
+
+Run tests:
+`bundle exec rspec`
