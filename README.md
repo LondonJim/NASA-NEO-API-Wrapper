@@ -6,8 +6,6 @@ Gives details on the closest Near Earth Object of the day.
 
 Uses `Ruby 2.6.1`
 
-`bundle`
-
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -20,7 +18,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install neo
+    $ gem install nasa-neo
 
 ## Instructions
 A default api key of DEMO_KEY will let you make up to 30 requests per hour (50 per day), if you have your own api key (https://api.nasa.gov/index.html#apply-for-an-api-key) you can set it as detailed under instructions (developer API keys allow up to 1000 requests an hour)
