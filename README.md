@@ -9,7 +9,7 @@ Uses `Ruby 2.6.1`
 `bundle`
 
 ## Instructions
-A default api key of DEMO_KEY will let you make up to 30 requests per hour (50 per day), if you have your own api key (https://api.nasa.gov/index.html#apply-for-an-api-key) you can pass it in as an argument.
+A default api key of DEMO_KEY will let you make up to 30 requests per hour (50 per day), if you have your own api key (https://api.nasa.gov/index.html#apply-for-an-api-key) you can set it as detailed under instructions (developer API keys allow up to 1000 request and hour)
 
 Create client to make requests to the API (using demo api key):
 
@@ -17,11 +17,16 @@ Create client to make requests to the API (using demo api key):
 client = NEO::CloseObj.configure
 ```
 
-Create client to make requests to the API (using pwn api key):
+Set the API key (default is DEMO_KEY)
+```
+client.key = "MyKey"
+```
 
+Change the date (default is the current day)
 ```
-client = NEO::CloseObj.configure("YOUR API KEY HERE")
+client.date = "2019-04-10"
 ```
+Please Note: The first request for information results in an API call, unless the date is changed no more API calls are made as the information of the closet near earth object is stored on the first request.
 
 ##### Retrieving Information
 
