@@ -1,7 +1,7 @@
 require 'open-uri'
 require 'json'
 
-module NEO
+module NasaNeo
   module CloseObj
     class Client
 

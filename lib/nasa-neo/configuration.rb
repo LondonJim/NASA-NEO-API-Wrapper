@@ -1,4 +1,4 @@
-module NEO
+module NasaNeo
   module CloseObj
     class Configuration
       DEFAULT_HOST = 'https://api.nasa.gov/neo/rest/v1/feed'

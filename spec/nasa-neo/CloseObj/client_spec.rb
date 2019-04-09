@@ -1,8 +1,4 @@
-require 'base'
-require 'client'
-require 'configuration'
-
-RSpec.describe NEO::CloseObj::Client do
+RSpec.describe NasaNeo::CloseObj::Client do
   before do
     stub_request(:get, 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2019-04-08&end_date=2019-04-08&detailed=false&api_key=DEMO_KEY')
       .to_return(status: 200, body: '{"near_earth_objects": {"2019-04-08": [{"name": "neo name",
@@ -13,10 +9,10 @@ RSpec.describe NEO::CloseObj::Client do
   end
 
   let(:config) do
-    Struct.new(:host, :api_key).new(NEO::CloseObj::Configuration::DEFAULT_HOST, NEO::CloseObj::Configuration::DEFAULT_API_KEY)
+    Struct.new(:host, :api_key).new(NasaNeo::CloseObj::Configuration::DEFAULT_HOST, NasaNeo::CloseObj::Configuration::DEFAULT_API_KEY)
   end
 
-  subject { NEO::CloseObj::Client.new(config) }
+  subject { NasaNeo::CloseObj::Client.new(config) }
 
     before(:each) do
       subject.instance_variable_set(:@date, "2019-04-08")

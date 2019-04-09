@@ -11,7 +11,7 @@ Uses `Ruby 2.6.1`
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'neo'
+gem 'nasa-neo'
 ```
 
 And then execute:
@@ -28,7 +28,7 @@ A default api key of DEMO_KEY will let you make up to 30 requests per hour (50 p
 Create client to make requests to the API (using demo api key):
 
 ```
-client = NEO::CloseObj.configure
+client = NasaNeo::CloseObj.configure
 ```
 
 Set the API key (default is DEMO_KEY)

@@ -1,7 +1,7 @@
 require_relative 'configuration'
 require_relative 'client'
 
-module NEO
+module NasaNeo
   module CloseObj
     def self.client
       @client

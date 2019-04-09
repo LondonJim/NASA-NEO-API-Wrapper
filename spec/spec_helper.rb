@@ -1,6 +1,10 @@
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+
+require 'rspec'
 require "bundler/setup"
-require "neo"
 require 'webmock/rspec'
+require 'nasa-neo'
 
 RSpec.configure do |config|
 
