@@ -16,25 +16,41 @@ module NEO
       end
 
       def estimated_diameter
-        retrieve_neo["estimated_diameter"]
+        call_and_rescue { retrieve_neo["estimated_diameter"] }
       end
 
       def miss_distance
-        retrieve_neo["close_approach_data"][0]["miss_distance"]
+        call_and_rescue { retrieve_neo["close_approach_data"][0]["miss_distance"] }
       end
 
       def neo_name
-        retrieve_neo["name"]
+        call_and_rescue { retrieve_neo["name"] }
       end
 
       def velocity
-        retrieve_neo["close_approach_data"][0]["relative_velocity"]
+        call_and_rescue { retrieve_neo["close_approach_data"][0]["relative_velocity"] }
       end
 
       private
 
-      def set_full_url
-        "#{@config.host}?start_date=#{@date}&end_date=#{@date}&detailed=false&api_key=#{@key}"
+      def buffer_url
+        open(@full_url).read
+      end
+
+      def call_and_rescue
+        yield if block_given?
+        rescue OpenURI::HTTPError => e
+          { 'error': e.io.status }
+      end
+
+      def get_api_data
+        @full_url = set_full_url
+        buffer = JSON.parse(buffer_url)
+        @result = buffer
+      end
+
+      def parsed_date
+        Time.now.strftime("%Y-%m-%d")
       end
 
       def retrieve_neo
@@ -42,18 +58,8 @@ module NEO
         @result["near_earth_objects"]["#{@date}"][0]
       end
 
-      def buffer_url
-        open(@full_url)
-      end
-
-      def parsed_date
-        Time.now.strftime("%Y-%m-%d")
-      end
-
-      def get_api_data
-        @full_url = set_full_url
-        buffer = buffer_url.read
-        @result = JSON.parse(buffer)
+      def set_full_url
+        "#{@config.host}?start_date=#{@date}&end_date=#{@date}&detailed=false&api_key=#{@key}"
       end
 
     end
