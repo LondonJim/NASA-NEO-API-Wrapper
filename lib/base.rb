@@ -7,8 +7,8 @@ module NEO
       @client
     end
 
-    def self.configure(api_key = 'DEMO_KEY')
-      @client = Client.new(Configuration.new(api_key))
+    def self.configure
+      @client = Client.new(Configuration.new)
     end
   end
 end
