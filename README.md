@@ -65,6 +65,19 @@ client.velocity
 eg. {"kilometers_per_second"=>"14.488889894", "kilometers_per_hour"=>"52160.0036184644", "miles_per_hour"=>"32410.1978039286"}
 ```
 
+##### Exceptions
+
+Exceptions are returned as a hash (example of wrong date):
+```
+client.date = "123"
+```
+returns:
+```
+{:error=>["400", ""]}
+```
+If an error is returned the next method request for information will make an API call
+
+
 ## Testing
 
 Uses `RSpec 3.8`
