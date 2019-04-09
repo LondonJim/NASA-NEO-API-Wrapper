@@ -8,6 +8,8 @@ RSpec.describe NEO::CloseObj::Client do
       .to_return(status: 200, body: '{"near_earth_objects": {"2019-04-08": [{"name": "neo name",
                                                                              "close_approach_data": [{"miss_distance": "miss distance data", "relative_velocity": "relative velocity data"}],
                                                                              "estimated_diameter": "estimated diameter data"}]}}', headers: {})
+    stub_request(:get, 'https://api.nasa.gov/neo/rest/v1/feed?start_date=19-04-08&end_date=19-04-08&detailed=false&api_key=DEMO_KEY')
+      .to_return(status: [400, ""])
   end
 
   let(:config) do
@@ -44,6 +46,11 @@ RSpec.describe NEO::CloseObj::Client do
     it 'sets a date' do
       subject.date = "2018-04-10"
       expect(subject.date).to eq("2018-04-10")
+    end
+
+    it 'returns 400 status error hash when date wrong' do
+      subject.instance_variable_set(:@date, "19-04-08")
+      expect(subject.neo_name).to eq({ error: ["400", ""]})
     end
 
 end

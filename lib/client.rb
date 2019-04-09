@@ -40,6 +40,7 @@ module NEO
       def call_and_rescue
         yield if block_given?
         rescue OpenURI::HTTPError => e
+          @full_url = nil
           { 'error': e.io.status }
       end
 
