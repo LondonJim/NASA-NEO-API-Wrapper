@@ -44,66 +44,66 @@ Please Note: The first request for information results in an API call, unless th
 
 ### Retrieving Information
 
-##### Given name
+#### Given name
 
 ```
 client.neo_name
 ```
-Returns:
+Example return:
 ```
 "(2004 VB)"
 ```
 
 
-##### Potential hazardousness boolean
+#### Potential hazardousness boolean
 ```
 client.hazardous?
 ```
-Returns (hopefully):
+Example return (hopefully):
 ```
 false
 ```
 
-##### Estimated diameter
+#### Estimated diameter
 
 ```
 client.estimated_diameter
 ```
-Returns:
+Example return:
 ```
 {"kilometers"=>{"estimated_diameter_min"=>0.1838886721, "estimated_diameter_max"=>0.411187571}, "meters"=>{"estimated_diameter_min"=>183.8886720703, "estimated_diameter_max"=>411.1875710413}, "miles"=>{"estimated_diameter_min"=>0.1142630881, "estimated_diameter_max"=>0.2555000322}, "feet"=>{"estimated_diameter_min"=>603.309310875, "estimated_diameter_max"=>1349.040630575}}
 ```
 
 
-##### Miss distance to earth
+#### Miss distance to earth
 
 ```
 client.miss_distance
 ```
-Returns:
+Example return:
 ```
 {"astronomical"=>"0.1915058335", "lunar"=>"74.4957733154", "kilometers"=>"28648866", "miles"=>"17801580"}
 ```
 
 
-##### Velocity
+#### Velocity
 
 ```
 client.velocity
 ```
-Returns:
+Example return:
 ```
 {"kilometers_per_second"=>"14.488889894", "kilometers_per_hour"=>"52160.0036184644", "miles_per_hour"=>"32410.1978039286"}
 ```
 
 
-##### All data on closest object
+#### All data on closest object
 
 ```
 client.neo_data
 ```
 
-Returns:
+Example return:
 ```
 {"links"=>{"self"=>"https://api.nasa.gov/neo/rest/v1/neo/3840869?api_key=DEMO_KEY"}, "id"=>"3840869", "neo_reference_id"=>"3840869", "name"=>"(2019 GK4)", "nasa_jpl_url"=>"http://ssd.jpl.nasa.gov/sbdb.cgi?sstr=3840869", "absolute_magnitude_h"=>23.83, "estimated_diameter"=>{"kilometers"=>{"estimated_diameter_min"=>0.0455569852, "estimated_diameter_max"=>0.1018685158}, "meters"=>{"estimated_diameter_min"=>45.5569852336, "estimated_diameter_max"=>101.8685158322}, "miles"=>{"estimated_diameter_min"=>0.0283077895, "estimated_diameter_max"=>0.0632981416}, "feet"=>{"estimated_diameter_min"=>149.4651794337, "estimated_diameter_max"=>334.214301483}}, "is_potentially_hazardous_asteroid"=>false, "close_approach_data"=>[{"close_approach_date"=>"2019-04-10", "epoch_date_close_approach"=>1554879600000, "relative_velocity"=>{"kilometers_per_second"=>"14.9701946153", "kilometers_per_hour"=>"53892.7006150984", "miles_per_hour"=>"33486.828334976"}, "miss_distance"=>{"astronomical"=>"0.089370038", "lunar"=>"34.7649421692", "kilometers"=>"13369567", "miles"=>"8307464"}, "orbiting_body"=>"Earth"}], "is_sentry_object"=>false}
 ```
