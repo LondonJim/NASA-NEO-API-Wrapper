@@ -1,4 +1,4 @@
-# Nasa Near Earth Object API Wrapper
+# NASA Near Earth Object API Wrapper
 
 Gives details on the closest Near Earth Object of the day.
 
