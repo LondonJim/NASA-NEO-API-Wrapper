@@ -3,7 +3,8 @@ RSpec.describe NasaNeo::CloseObj::Client do
     stub_request(:get, 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2019-04-08&end_date=2019-04-08&detailed=false&api_key=DEMO_KEY')
       .to_return(status: 200, body: '{"near_earth_objects": {"2019-04-08": [{"name": "neo name",
                                                                              "close_approach_data": [{"miss_distance": "miss distance data", "relative_velocity": "relative velocity data"}],
-                                                                             "estimated_diameter": "estimated diameter data"}]}}', headers: {})
+                                                                             "estimated_diameter": "estimated diameter data",
+                                                                             "is_potentially_hazardous_asteroid": false }]}}', headers: {})
     stub_request(:get, 'https://api.nasa.gov/neo/rest/v1/feed?start_date=19-04-08&end_date=19-04-08&detailed=false&api_key=DEMO_KEY')
       .to_return(status: [400, ""])
   end
@@ -32,6 +33,15 @@ RSpec.describe NasaNeo::CloseObj::Client do
 
     it 'returns the estimated diameter' do
       expect(subject.estimated_diameter).to eq('estimated diameter data')
+    end
+
+    it 'returns boolean of potential hazardousness' do
+      expect(subject.hazardous?).to eq(false)
+    end
+
+    it 'returns all data for closest near earth object' do
+      expect(subject.neo_data).to eq(JSON.parse('{"name": "neo name", "close_approach_data": [{"miss_distance": "miss distance data", "relative_velocity": "relative velocity data"}],
+                                       "estimated_diameter": "estimated diameter data", "is_potentially_hazardous_asteroid": false}'))
     end
 
     it 'sets an api key' do

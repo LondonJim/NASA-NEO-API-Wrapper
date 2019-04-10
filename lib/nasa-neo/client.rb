@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open-uri'
 require 'json'
 
@@ -19,12 +21,20 @@ module NasaNeo
         call_and_rescue { retrieve_neo["estimated_diameter"] }
       end
 
+      def hazardous?
+        call_and_rescue { retrieve_neo["is_potentially_hazardous_asteroid"]}
+      end
+
       def miss_distance
         call_and_rescue { retrieve_neo["close_approach_data"][0]["miss_distance"] }
       end
 
       def neo_name
         call_and_rescue { retrieve_neo["name"] }
+      end
+
+      def neo_data
+        call_and_rescue { retrieve_neo }
       end
 
       def velocity

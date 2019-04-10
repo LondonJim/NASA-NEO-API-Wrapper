@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module NasaNeo
   module CloseObj
     class Configuration
-      DEFAULT_HOST = 'https://api.nasa.gov/neo/rest/v1/feed'
-      DEFAULT_API_KEY = 'DEMO_KEY'
+      DEFAULT_HOST = 'https://api.nasa.gov/neo/rest/v1/feed'.freeze
+      DEFAULT_API_KEY = 'DEMO_KEY'.freeze
 
       attr_accessor :api_key, :host
 
