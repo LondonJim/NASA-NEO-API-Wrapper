@@ -40,7 +40,7 @@ Change the date (only needs to be done if you want to select another data, defau
 ```
 client.date = "2019-04-10"
 ```
-Please Note: The first request for information results in an API call, unless the date is changed no more API calls are made as the information of the closet near earth object is stored on the first request.
+Please Note: The first request for information results in an API call, unless the date or API key is changed no more API calls are made as the information of the closet near earth object is stored on the first request.
 
 ### Retrieving Information
 
