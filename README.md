@@ -110,13 +110,15 @@ Example return:
 
 ### Exceptions
 
-Exceptions are returned as a hash (example of wrong date):
+Exceptions are returned as a hash
+
+Example of wrong API key set:
 ```
-client.date = "123"
+client.key = "wrong API key"
 ```
-Returns:
+Returns (on next API call method):
 ```
-{:error=>["400", ""]}
+{:error=>["400", "Forbidden"]}
 ```
 If an error is returned the next method request for information will make an API call
 
