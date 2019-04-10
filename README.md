@@ -36,7 +36,7 @@ Set the API key (only needs to be done is you want to use your own API key, defa
 client.key = "MyKey"
 ```
 
-Change the date (only needs to be done if you want to select another data, default setting is the current day)
+Change the date (only needs to be done if you want to select another data, default setting is the current day. Format: YYYY-MM-DD)
 ```
 client.date = "2019-04-10"
 ```
