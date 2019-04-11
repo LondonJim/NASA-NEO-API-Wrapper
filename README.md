@@ -73,7 +73,24 @@ Example return:
 ```
 {"kilometers"=>{"estimated_diameter_min"=>0.1838886721, "estimated_diameter_max"=>0.411187571}, "meters"=>{"estimated_diameter_min"=>183.8886720703, "estimated_diameter_max"=>411.1875710413}, "miles"=>{"estimated_diameter_min"=>0.1142630881, "estimated_diameter_max"=>0.2555000322}, "feet"=>{"estimated_diameter_min"=>603.309310875, "estimated_diameter_max"=>1349.040630575}}
 ```
-
+---
+Current valid arguments: "kilometers", "meters", "miles", "feet"
+```
+client.estimated_diameter("meters")
+```
+Example return:
+```
+{"estimated_diameter_min"=>183.8886720703, "estimated_diameter_max"=>411.1875710413}
+```
+---
+Current valid arguments: "min", "max"
+```
+client.estimated_diameter("meters", "min")
+```
+Example return:
+```
+183.8886720703
+```
 
 #### Miss distance to earth
 
@@ -83,6 +100,15 @@ client.miss_distance
 Example return:
 ```
 {"astronomical"=>"0.1915058335", "lunar"=>"74.4957733154", "kilometers"=>"28648866", "miles"=>"17801580"}
+```
+---
+Current valid arguments: "astronomical", "lunar", "kilometers", "miles"
+```
+client.miss_distance("miles")
+```
+Example return (converts string to float):
+```
+17801580
 ```
 
 
@@ -95,6 +121,15 @@ Example return:
 ```
 {"kilometers_per_second"=>"14.488889894", "kilometers_per_hour"=>"52160.0036184644", "miles_per_hour"=>"32410.1978039286"}
 ```
+---
+Current valid arguments: "kilometers_per_second", "kilometers_per_hour", "miles_per_hour"
+```
+client.velocity("miles_per_hour")
+```
+Example return (converts string to float)
+```
+32410.1978039286
+```
 
 
 #### All data on closest object
@@ -103,7 +138,7 @@ Example return:
 client.neo_data
 ```
 
-Example return:
+Example return (all raw data on closest object):
 ```
 {"links"=>{"self"=>"https://api.nasa.gov/neo/rest/v1/neo/3840869?api_key=DEMO_KEY"}, "id"=>"3840869", "neo_reference_id"=>"3840869", "name"=>"(2019 GK4)", "nasa_jpl_url"=>"http://ssd.jpl.nasa.gov/sbdb.cgi?sstr=3840869", "absolute_magnitude_h"=>23.83, "estimated_diameter"=>{"kilometers"=>{"estimated_diameter_min"=>0.0455569852, "estimated_diameter_max"=>0.1018685158}, "meters"=>{"estimated_diameter_min"=>45.5569852336, "estimated_diameter_max"=>101.8685158322}, "miles"=>{"estimated_diameter_min"=>0.0283077895, "estimated_diameter_max"=>0.0632981416}, "feet"=>{"estimated_diameter_min"=>149.4651794337, "estimated_diameter_max"=>334.214301483}}, "is_potentially_hazardous_asteroid"=>false, "close_approach_data"=>[{"close_approach_date"=>"2019-04-10", "epoch_date_close_approach"=>1554879600000, "relative_velocity"=>{"kilometers_per_second"=>"14.9701946153", "kilometers_per_hour"=>"53892.7006150984", "miles_per_hour"=>"33486.828334976"}, "miss_distance"=>{"astronomical"=>"0.089370038", "lunar"=>"34.7649421692", "kilometers"=>"13369567", "miles"=>"8307464"}, "orbiting_body"=>"Earth"}], "is_sentry_object"=>false}
 ```
@@ -120,7 +155,17 @@ Returns (on next API call method):
 ```
 {:error=>["400", "Forbidden"]}
 ```
-If an error is returned the next method request for information will make an API call
+If a status error is returned the next method request for information will make an API call
+
+---
+Example of unrecognised argument on method:
+```
+client.estimated_diameter("wrong measurement unit")
+```
+Returns:
+```
+{:error=>["measurement", "check argument"]}
+```
 
 
 ### Testing
