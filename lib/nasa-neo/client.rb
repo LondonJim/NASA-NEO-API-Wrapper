@@ -29,17 +29,7 @@ module NasaNeo
       end
 
       def estimated_diameter(measurement = nil, min_max = nil)
-        if ESTIMATED_DIAMETER_OPTIONS.include? measurement
-          if ["min", "max"].include? min_max
-            call_and_rescue { retrieve_neo(ESTIMATED_DIAMETER_KEYS + ["#{measurement}", "estimated_diameter_#{min_max}"]) }
-          else
-            min_max == nil ? call_and_rescue { retrieve_neo(ESTIMATED_DIAMETER_KEYS + ["#{measurement}"]) }
-                           : error_feedback(['min_max', 'check arguments'])
-          end
-        else
-          measurement == nil ? call_and_rescue { retrieve_neo(ESTIMATED_DIAMETER_KEYS) }
-                             : error_feedback(['measurement', 'check arguments'])
-        end
+        retrieve_specific(ESTIMATED_DIAMETER_OPTIONS, ESTIMATED_DIAMETER_KEYS, measurement, min_max)
       end
 
       def hazardous?
@@ -47,12 +37,7 @@ module NasaNeo
       end
 
       def miss_distance(measurement = nil)
-        if MISS_DISTANCE_OPTIONS.include? measurement
-          call_and_rescue { retrieve_neo(MISS_DISTANCE_KEYS + ["#{measurement}"]).to_f }
-        else
-          measurement == nil ? call_and_rescue { retrieve_neo(MISS_DISTANCE_KEYS) }
-                             : error_feedback(['measurement', 'check arguments'])
-        end
+        retrieve_specific(MISS_DISTANCE_OPTIONS, MISS_DISTANCE_KEYS, measurement)
       end
 
       def neo_name
@@ -80,12 +65,7 @@ module NasaNeo
       end
 
       def velocity(measurement = nil)
-        if VELOCITY_OPTIONS.include? measurement
-          call_and_rescue { retrieve_neo(VELOCITY_KEYS + ["#{measurement}"]).to_f }
-        else
-          measurement == nil ? call_and_rescue { retrieve_neo(VELOCITY_KEYS) }
-                             : error_feedback(['measurement', 'check arguments'])
-        end
+        retrieve_specific(VELOCITY_OPTIONS, VELOCITY_KEYS, measurement)
       end
 
       private
@@ -116,6 +96,23 @@ module NasaNeo
         get_api_data if @full_url != set_full_url
         root_keys = ["near_earth_objects", "#{@date}", @neo_position]
         @result.dig(*root_keys + keys)
+      end
+
+      def retrieve_specific(options, keys, measurement, min_max = nil)
+
+        if options.include? measurement
+          chained_keys = retrieve_neo(keys + ["#{measurement}"])
+          if ["min", "max"].include? min_max
+            call_and_rescue { chained_keys["estimated_diameter_#{min_max}"] }
+          else
+            min_max == nil ? call_and_rescue { chained_keys.respond_to?(:to_f) ? chained_keys.to_f
+                                                                               : chained_keys }
+                           : error_feedback(['min_max', 'check arguments'])
+          end
+        else
+          measurement == nil ? call_and_rescue { retrieve_neo(keys) }
+                             : error_feedback(['measurement', 'check arguments'])
+        end
       end
 
       def error_feedback(error_info)
