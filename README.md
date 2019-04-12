@@ -209,6 +209,16 @@ Returns:
 ```
 nil
 ```
+---
+Example of return if numbered information not present outside year range, eg. if selected miss distance in miles of Near Earth Object is not present (applicable to #miss_distance and #velocity with valid arguments):
+```
+client.date = "2400-01-01"
+client.miss_distance("miles")
+```
+Returns:
+```
+0.0
+```
 
 
 ### Testing

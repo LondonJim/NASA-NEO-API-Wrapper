@@ -7,6 +7,16 @@ module NasaNeo
   module CloseObj
     class Client
 
+      ESTIMATED_DIAMETER_OPTIONS = ["kilometers", "meters", "miles", "feet"]
+      MISS_DISTANCE_OPTIONS = ["astronomical", "lunar", "kilometers", "miles"]
+      VELOCITY_OPTIONS = ["kilometers_per_second", "kilometers_per_hour", "miles_per_hour"]
+
+      NEO_NAME_KEYS = ["name"]
+      HAZARDOUS_KEYS = ["is_potentially_hazardous_asteroid"]
+      ESTIMATED_DIAMETER_KEYS = ["estimated_diameter"]
+      MISS_DISTANCE_KEYS = ["close_approach_data", 0, "miss_distance"]
+      VELOCITY_KEYS = ["close_approach_data", 0, "relative_velocity"]
+
       attr_accessor :date, :key
 
       def initialize(config)
@@ -16,40 +26,37 @@ module NasaNeo
         @full_url = nil
         @result = nil
         @neo_position = 0
-        @estimated_diameter_options = ["kilometers", "meters", "miles", "feet"]
-        @miss_distance_options = ["astronomical", "lunar", "kilometers", "miles"]
-        @velocity_options = ["kilometers_per_second", "kilometers_per_hour", "miles_per_hour"]
       end
 
       def estimated_diameter(measurement = nil, min_max = nil)
-        if @estimated_diameter_options.include? measurement
+        if ESTIMATED_DIAMETER_OPTIONS.include? measurement
           if ["min", "max"].include? min_max
-            call_and_rescue { estimated_diameter_data[measurement]["estimated_diameter_#{min_max}"] }
+            call_and_rescue { retrieve_neo(ESTIMATED_DIAMETER_KEYS + ["#{measurement}", "estimated_diameter_#{min_max}"]) }
           else
-            min_max == nil ? call_and_rescue { estimated_diameter_data[measurement] }
+            min_max == nil ? call_and_rescue { retrieve_neo(ESTIMATED_DIAMETER_KEYS + ["#{measurement}"]) }
                            : error_feedback(['min_max', 'check arguments'])
           end
         else
-          measurement == nil ? call_and_rescue { estimated_diameter_data }
+          measurement == nil ? call_and_rescue { retrieve_neo(ESTIMATED_DIAMETER_KEYS) }
                              : error_feedback(['measurement', 'check arguments'])
         end
       end
 
       def hazardous?
-        call_and_rescue { hazardous_data }
+        call_and_rescue { retrieve_neo(HAZARDOUS_KEYS) }
       end
 
       def miss_distance(measurement = nil)
-        if @miss_distance_options.include? measurement
-          call_and_rescue { miss_distance_data[measurement].to_f }
+        if MISS_DISTANCE_OPTIONS.include? measurement
+          call_and_rescue { retrieve_neo(MISS_DISTANCE_KEYS + ["#{measurement}"]).to_f }
         else
-          measurement == nil ? call_and_rescue { miss_distance_data }
+          measurement == nil ? call_and_rescue { retrieve_neo(MISS_DISTANCE_KEYS) }
                              : error_feedback(['measurement', 'check arguments'])
         end
       end
 
       def neo_name
-        call_and_rescue { neo_name_data }
+        call_and_rescue { retrieve_neo(NEO_NAME_KEYS) }
       end
 
       def neo_data
@@ -62,7 +69,6 @@ module NasaNeo
         else
           @result["element_count"]
         end
-
       end
 
       def update
@@ -74,10 +80,10 @@ module NasaNeo
       end
 
       def velocity(measurement = nil)
-        if @velocity_options.include? measurement
-          call_and_rescue { velocity_data[measurement].to_f }
+        if VELOCITY_OPTIONS.include? measurement
+          call_and_rescue { retrieve_neo(VELOCITY_KEYS + ["#{measurement}"]).to_f }
         else
-          measurement == nil ? call_and_rescue { velocity_data }
+          measurement == nil ? call_and_rescue { retrieve_neo(VELOCITY_KEYS) }
                              : error_feedback(['measurement', 'check arguments'])
         end
       end
@@ -97,6 +103,7 @@ module NasaNeo
 
       def get_api_data
         @full_url = set_full_url
+        @neo_position = 0
         buffer = JSON.parse(buffer_url)
         @result = buffer
       end
@@ -105,38 +112,14 @@ module NasaNeo
         Time.now.strftime("%Y-%m-%d")
       end
 
-      def retrieve_neo
+      def retrieve_neo(keys = [])
         get_api_data if @full_url != set_full_url
-        @result.dig("near_earth_objects", "#{@date}", @neo_position)
-      end
-
-      def estimated_diameter_data
-        data = retrieve_neo
-        data == nil ? nil : data["estimated_diameter"]
+        root_keys = ["near_earth_objects", "#{@date}", @neo_position]
+        @result.dig(*root_keys + keys)
       end
 
       def error_feedback(error_info)
         { 'error': error_info }
-      end
-
-      def hazardous_data
-        data = retrieve_neo
-        data == nil ? nil : data["is_potentially_hazardous_asteroid"]
-      end
-
-      def miss_distance_data
-        data = retrieve_neo
-        data == nil ? nil : data["close_approach_data"][0]["miss_distance"]
-      end
-
-      def neo_name_data
-        data = retrieve_neo
-        data == nil ? nil : data["name"]
-      end
-
-      def velocity_data
-        data = retrieve_neo
-        data == nil ? nil : data["close_approach_data"][0]["relative_velocity"]
       end
 
       def set_full_url
