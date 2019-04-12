@@ -217,7 +217,7 @@ client.miss_distance("miles")
 ```
 Returns:
 ```
-0.0
+nil
 ```
 
 

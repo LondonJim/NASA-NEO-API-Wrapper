@@ -99,14 +99,15 @@ module NasaNeo
       end
 
       def retrieve_specific(options, keys, measurement, min_max = nil)
-
         if options.include? measurement
           chained_keys = retrieve_neo(keys + ["#{measurement}"])
           if ["min", "max"].include? min_max
-            call_and_rescue { chained_keys["estimated_diameter_#{min_max}"] }
+            chained_keys = retrieve_neo(keys + ["#{measurement}", "estimated_diameter_#{min_max}"])
+            call_and_rescue { chained_keys }
           else
-            min_max == nil ? call_and_rescue { chained_keys.respond_to?(:to_f) ? chained_keys.to_f
-                                                                               : chained_keys }
+            min_max == nil ? call_and_rescue { (chained_keys.respond_to?(:to_f) &&
+                                                chained_keys != nil) ? chained_keys.to_f
+                                                                     : chained_keys }
                            : error_feedback(['min_max', 'check arguments'])
           end
         else
