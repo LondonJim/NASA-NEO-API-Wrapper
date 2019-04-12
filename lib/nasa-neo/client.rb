@@ -57,8 +57,12 @@ module NasaNeo
       end
 
       def neo_total
-        call_and_rescue { get_api_data } if @full_url != set_full_url
-        @result["element_count"]
+        if @full_url != set_full_url
+          call_and_rescue { get_api_data["element_count"]}
+        else
+          @result["element_count"]
+        end
+
       end
 
       def update
