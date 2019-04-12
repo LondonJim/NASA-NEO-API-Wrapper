@@ -1,7 +1,8 @@
 RSpec.describe NasaNeo::CloseObj::Client do
   before do
     stub_request(:get, 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2019-04-08&end_date=2019-04-08&detailed=false&api_key=DEMO_KEY')
-      .to_return(status: 200, body: '{"near_earth_objects": {"2019-04-08": [{"name": "neo name",
+      .to_return(status: 200, body: '{"element_count": 10,
+                                      "near_earth_objects": {"2019-04-08": [{"name": "neo name",
                                                                              "close_approach_data": [{"miss_distance": {"astronomical": "0.1915058335",
                                                                                                                         "lunar": "74.4957733154",
                                                                                                                         "kilometers": "28648866",
@@ -28,9 +29,40 @@ RSpec.describe NasaNeo::CloseObj::Client do
       subject.instance_variable_set(:@date, "2019-04-08")
     end
 
+    describe '#neo_total' do
+      it 'returns the neo name' do
+        expect(subject.neo_total).to eq(10)
+      end
+    end
+
+    describe '#neo_select' do
+      it 'sets the @neo_position in array' do
+        expect(subject.neo_select(2)).to eq(1)
+      end
+    end
+
     describe '#neo_name' do
       it 'returns the neo name' do
         expect(subject.neo_name).to eq('neo name')
+      end
+    end
+
+    describe '#update' do
+      it 'stores the data information' do
+        expect(subject.update).to eq(JSON.parse('{"element_count": 10,
+                                                  "near_earth_objects":{"2019-04-08": [{"name": "neo name",
+                                                                                        "close_approach_data": [{"miss_distance": {"astronomical": "0.1915058335",
+                                                                                                                                   "lunar": "74.4957733154",
+                                                                                                                                   "kilometers": "28648866",
+                                                                                                                                   "miles": "17801580"},
+                                                                                                                 "relative_velocity": {"kilometers_per_second": "14.488889894",
+                                                                                                                                       "kilometers_per_hour": "52160.0036184644",
+                                                                                                                                       "miles_per_hour": "32410.1978039286"}}],
+                                                                                        "estimated_diameter": {"kilometers": {"estimated_diameter_min": 0.1838886721, "estimated_diameter_max": 0.411187571},
+                                                                                                               "meters": {"estimated_diameter_min": 183.8886720703, "estimated_diameter_max": 411.1875710413},
+                                                                                                               "miles": {"estimated_diameter_min": 0.1142630881, "estimated_diameter_max": 0.2555000322},
+                                                                                                               "feet": {"estimated_diameter_min": 603.309310875, "estimated_diameter_max": 1349.040630575}},
+                                                                                        "is_potentially_hazardous_asteroid": false}]}}'))
       end
     end
 

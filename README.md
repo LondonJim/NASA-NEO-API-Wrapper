@@ -1,6 +1,6 @@
 # NASA Near Earth Object API Wrapper
 
-Gives details on the closest Near Earth Object of the day.
+Gives details on the closest Near Earth Objects of the day. All Near Earth Objects can now be individually selected. Currently the NEO API only holds data from 1900 to 2200, any requests for information outside these years will return nil. Data is also limited to encounters with reasonably low uncertainty.
 
 ## Installation
 
@@ -25,24 +25,57 @@ Or install it yourself as:
 ### Configuration
 A default api key of DEMO_KEY will let you make up to 30 requests per hour (50 per day), if you have your own api key (https://api.nasa.gov/index.html#apply-for-an-api-key) you can set it as detailed under instructions (developer API keys allow up to 1000 requests an hour)
 
-Create client to make requests to the API (using demo api key):
+
+#### Create client
+
+Set the API key (only needs to be done if you want to use your own API key, default setting is DEMO_KEY)
 
 ```
 client = NasaNeo::CloseObj.configure
 ```
 
-Set the API key (only needs to be done is you want to use your own API key, default setting is DEMO_KEY)
+
+#### Set the API key
+
+(only needs to be done if you want to use your own API key, default setting is DEMO_KEY)
 ```
 client.key = "MyKey"
 ```
 
-Change the date (only needs to be done if you want to select another data, default setting is the current day. Format: YYYY-MM-DD)
+#### Change the date
+(only needs to be done if you want to select another date, default setting is the current day. Format: YYYY-MM-DD)
 ```
 client.date = "2019-04-10"
 ```
-Please Note: The first request for information results in an API call, unless the date or API key is changed no more API calls are made as the information of the closet near earth object is stored on the first request.
+
+#### Update
+OPTIONAL: The Near Earth Object data for the date can be called and stored before any methods are run (otherwise the first information request method will make an API call and store the data)
+```
+client.update
+```
+
+#### Select Near Earth Object
+Manually select a Near Earth Object for the date (if not a recognised number all data returned will be `nil`). Note: The default is the first (closest). To find the total number of Near Earth Objects recorded for the date see `Find the total Near Earth Objects recorded for the date` in the next section.
+
+Example(selects 2nd closest Near Earth Object):
+```
+client.neo_select(2)
+```
+
+Please Note: If the date or key is changed the next method requesting information will make an API call. You can use `update` (as above) to store the data in anticipation of running the methods beforehand if needed but is not necessary. Only one API call is made unless there are changes to the date, API key or `update` is run again.
+
 
 ### Retrieving Information
+
+#### Find the total Near Earth Objects recorded for the date
+
+```
+client.neo_total
+```
+Example return:
+```
+10
+```
 
 #### Given name
 
@@ -132,7 +165,7 @@ Example return (converts string to float)
 ```
 
 
-#### All data on closest object
+#### All data on closest object selected
 
 ```
 client.neo_data
@@ -165,6 +198,16 @@ client.estimated_diameter("wrong measurement unit")
 Returns:
 ```
 {:error=>["measurement", "check argument"]}
+```
+---
+Example of return if information no present, eg. if selected number of Near Earth Object is not present:
+```
+client.neo_select(99)
+client.neo_name
+```
+Returns:
+```
+nil
 ```
 
 

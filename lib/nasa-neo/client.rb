@@ -15,6 +15,7 @@ module NasaNeo
         @date = parsed_date
         @full_url = nil
         @result = nil
+        @neo_position = 0
         @estimated_diameter_options = ["kilometers", "meters", "miles", "feet"]
         @miss_distance_options = ["astronomical", "lunar", "kilometers", "miles"]
         @velocity_options = ["kilometers_per_second", "kilometers_per_hour", "miles_per_hour"]
@@ -35,7 +36,7 @@ module NasaNeo
       end
 
       def hazardous?
-        call_and_rescue { retrieve_neo["is_potentially_hazardous_asteroid"]}
+        call_and_rescue { hazardous_data }
       end
 
       def miss_distance(measurement = nil)
@@ -48,11 +49,24 @@ module NasaNeo
       end
 
       def neo_name
-        call_and_rescue { retrieve_neo["name"] }
+        call_and_rescue { neo_name_data }
       end
 
       def neo_data
         call_and_rescue { retrieve_neo }
+      end
+
+      def neo_total
+        call_and_rescue { get_api_data } if @full_url != set_full_url
+        @result["element_count"]
+      end
+
+      def update
+        call_and_rescue { get_api_data }
+      end
+
+      def neo_select(n)
+        @neo_position = n - 1
       end
 
       def velocity(measurement = nil)
@@ -89,23 +103,36 @@ module NasaNeo
 
       def retrieve_neo
         get_api_data if @full_url != set_full_url
-        @result["near_earth_objects"]["#{@date}"][0]
+        @result.dig("near_earth_objects", "#{@date}", @neo_position)
       end
 
       def estimated_diameter_data
-        retrieve_neo["estimated_diameter"]
+        data = retrieve_neo
+        data == nil ? nil : data["estimated_diameter"]
       end
 
       def error_feedback(error_info)
         { 'error': error_info }
       end
 
+      def hazardous_data
+        data = retrieve_neo
+        data == nil ? nil : data["is_potentially_hazardous_asteroid"]
+      end
+
       def miss_distance_data
-        retrieve_neo["close_approach_data"][0]["miss_distance"]
+        data = retrieve_neo
+        data == nil ? nil : data["close_approach_data"][0]["miss_distance"]
+      end
+
+      def neo_name_data
+        data = retrieve_neo
+        data == nil ? nil : data["name"]
       end
 
       def velocity_data
-        retrieve_neo["close_approach_data"][0]["relative_velocity"]
+        data = retrieve_neo
+        data == nil ? nil : data["close_approach_data"][0]["relative_velocity"]
       end
 
       def set_full_url
