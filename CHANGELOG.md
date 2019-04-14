@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.5.2] - 2018-04-14
+
+### Added
+
+- Updated gemspec meta information to include homepage, source code links
+
+## [1.5.1] - 2018-04-14
+
+### Fixed
+
+- Fixed bug that did not update Near Earth Object id when selecting object based on number
+
 ## [1.5.0] - 2018-04-14
 
 ### Added
