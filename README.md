@@ -40,6 +40,10 @@ The default setting is DEMO_KEY. This only needs to be set if you want to use yo
 ```
 client.key = "MyKey"
 ```
+or suggest using an environment variable eg.
+```
+client.key = ENV["NASA_API_KEY"]
+```
 
 #### Change the date
 Default setting is the current day, only needs to be set if you want another day. Format: YYYY-MM-DD)
@@ -47,18 +51,10 @@ Default setting is the current day, only needs to be set if you want another day
 client.date = "2019-04-10"
 ```
 
-#### Update
+#### Update API data stored
 OPTIONAL: The Near Earth Object data for the date can be called and stored before any methods are run (otherwise the first information request method will make an API call and store the data)
 ```
 client.update
-```
-
-#### Select Near Earth Object
-Manually select a Near Earth Object for the date (if not a recognised number all data returned when methods are executed will be `nil`). Note: The intial set default is the first (closest). To find the total number of Near Earth Objects recorded for the date see `Find the total Near Earth Objects recorded for the date` in the next section.
-
-Example(selects 2nd closest Near Earth Object):
-```
-client.neo_select(2)
 ```
 
 Please Note: If the date or key is changed the next method requesting information will make an API call. You can use `update` (as above) to store the data in anticipation of running the methods beforehand if needed but is not necessary. Only one API call is made unless there are changes to the date, API key or `update` is run again.
@@ -66,7 +62,9 @@ Please Note: If the date or key is changed the next method requesting informatio
 
 ### Retrieving Information
 
-#### Find the number of API calls remaining using current key
+#### General
+
+##### Find the number of API calls remaining using current key
 ```
 client.calls_remaining
 ```
@@ -76,7 +74,7 @@ Example return:
 ```
 Note: If an API call has not been made yet then an error hash is returned (`{:error=>"make new API call first"}`) as the calls remaining data is returned in the header of the API call. If an API key is changed then again an API call will need to be made first to retrieve this information.
 
-#### Find the total Near Earth Objects recorded for the date
+##### Find the total Near Earth Objects recorded for the date
 
 ```
 client.neo_total
@@ -86,7 +84,17 @@ Example return:
 10
 ```
 
-#### Given name
+##### Select Near Earth Object
+Manually select a Near Earth Object for the date (if not a recognised number all data returned when methods are executed will be `nil`). Note: The initial set default is the first (closest).
+
+Example(selects 2nd closest Near Earth Object):
+```
+client.neo_select(2)
+```
+
+#### Current Selected Near Earth Object
+
+##### Given name
 
 ```
 client.neo_name
@@ -97,7 +105,8 @@ Example return:
 ```
 
 
-#### Potential hazardousness boolean
+##### Potential hazardousness boolean
+Based on potential future Earth impact
 ```
 client.hazardous?
 ```
@@ -106,7 +115,7 @@ Example return:
 false
 ```
 
-#### Estimated diameter
+##### Estimated diameter
 
 ```
 client.estimated_diameter
@@ -134,7 +143,7 @@ Example return:
 183.8886720703
 ```
 
-#### Miss distance to earth
+##### Miss distance to earth
 
 ```
 client.miss_distance
@@ -154,7 +163,7 @@ Example return (converts string to float):
 ```
 
 
-#### Velocity
+##### Velocity
 
 ```
 client.velocity
@@ -174,7 +183,7 @@ Example return (converts string to float)
 ```
 
 
-#### All data on closest object selected
+##### Raw data of Near Earth Object based on date
 
 ```
 client.neo_data
@@ -184,6 +193,15 @@ Example return (all raw data on closest object):
 ```
 {"links"=>{"self"=>"https://api.nasa.gov/neo/rest/v1/neo/3840869?api_key=DEMO_KEY"}, "id"=>"3840869", "neo_reference_id"=>"3840869", "name"=>"(2019 GK4)", "nasa_jpl_url"=>"http://ssd.jpl.nasa.gov/sbdb.cgi?sstr=3840869", "absolute_magnitude_h"=>23.83, "estimated_diameter"=>{"kilometers"=>{"estimated_diameter_min"=>0.0455569852, "estimated_diameter_max"=>0.1018685158}, "meters"=>{"estimated_diameter_min"=>45.5569852336, "estimated_diameter_max"=>101.8685158322}, "miles"=>{"estimated_diameter_min"=>0.0283077895, "estimated_diameter_max"=>0.0632981416}, "feet"=>{"estimated_diameter_min"=>149.4651794337, "estimated_diameter_max"=>334.214301483}}, "is_potentially_hazardous_asteroid"=>false, "close_approach_data"=>[{"close_approach_date"=>"2019-04-10", "epoch_date_close_approach"=>1554879600000, "relative_velocity"=>{"kilometers_per_second"=>"14.9701946153", "kilometers_per_hour"=>"53892.7006150984", "miles_per_hour"=>"33486.828334976"}, "miss_distance"=>{"astronomical"=>"0.089370038", "lunar"=>"34.7649421692", "kilometers"=>"13369567", "miles"=>"8307464"}, "orbiting_body"=>"Earth"}], "is_sentry_object"=>false}
 ```
+
+##### All raw data held on selected Near Earth Object
+```
+client.neo_data_verbose
+```
+
+Returns all data held on the Near Earth Object. Includes all data on the dates of closest miss distances to Earth.
+
+Note: This will initially make an addition API call to retrieve this information, but like the first API call will not make additional calls unless the selected Near Earth Object is changed.
 
 ### Exceptions
 

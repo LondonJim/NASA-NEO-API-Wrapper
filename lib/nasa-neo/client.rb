@@ -12,6 +12,7 @@ module NasaNeo
       VELOCITY_OPTIONS = ["kilometers_per_second", "kilometers_per_hour", "miles_per_hour"]
 
       NEO_NAME_KEYS = ["name"]
+      NEO_ID_KEYS = ["id"]
       HAZARDOUS_KEYS = ["is_potentially_hazardous_asteroid"]
       ESTIMATED_DIAMETER_KEYS = ["estimated_diameter"]
       MISS_DISTANCE_KEYS = ["close_approach_data", 0, "miss_distance"]
@@ -26,7 +27,10 @@ module NasaNeo
         @key = config.api_key
         @date = parsed_date
         @full_url = nil
+        @full_url_neo = nil
+        @neo_id = nil
         @result = nil
+        @result_neo = nil
         @neo_position = 0
       end
 
@@ -61,7 +65,7 @@ module NasaNeo
       end
 
       def neo_data_verbose
-
+        call_and_rescue { retrieve_neo_verbose }
       end
 
       def neo_total
@@ -86,8 +90,8 @@ module NasaNeo
 
       private
 
-      def buffer_url
-        api_data = open(@full_url)
+      def buffer_url(url)
+        api_data = open(url)
         @calls_remaining = api_data.meta['x-ratelimit-remaining'].to_i
         api_data.read
       end
@@ -96,13 +100,14 @@ module NasaNeo
         yield if block_given?
         rescue OpenURI::HTTPError => e
           @full_url = nil
+          @full_url_neo = nil
           error_feedback(e.io.status)
       end
 
       def get_api_data
         @full_url = set_full_url
         @neo_position = 0
-        buffer = JSON.parse(buffer_url)
+        buffer = JSON.parse(buffer_url(@full_url))
         @result = buffer
       end
 
@@ -114,6 +119,16 @@ module NasaNeo
         get_api_data if @full_url != set_full_url
         root_keys = ["near_earth_objects", "#{@date}", @neo_position]
         @result.dig(*root_keys + keys)
+      end
+
+      def retrieve_neo_verbose
+        if @full_url_neo != set_full_url_neo
+          @neo_id = retrieve_neo(NEO_ID_KEYS)
+          @full_url_neo = set_full_url_neo
+          @result_neo = JSON.parse(buffer_url(@full_url_neo))
+        else
+          @result_neo
+        end
       end
 
       def retrieve_specific(options, keys, measurement, min_max = nil)
@@ -140,6 +155,10 @@ module NasaNeo
 
       def set_full_url
         "#{@config.host}/feed?start_date=#{@date}&end_date=#{@date}&detailed=false&api_key=#{@key}"
+      end
+
+      def set_full_url_neo
+        "#{@config.host}/neo/#{@neo_id}?api_key=#{@key}"
       end
 
     end

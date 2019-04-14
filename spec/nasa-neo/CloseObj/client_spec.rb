@@ -3,6 +3,7 @@ RSpec.describe NasaNeo::CloseObj::Client do
     stub_request(:get, 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2019-04-08&end_date=2019-04-08&detailed=false&api_key=DEMO_KEY')
       .to_return(status: 200, body: '{"element_count": 10,
                                       "near_earth_objects": {"2019-04-08": [{"name": "neo name",
+                                                                             "id": "123456",
                                                                              "close_approach_data": [{"miss_distance": {"astronomical": "0.1915058335",
                                                                                                                         "lunar": "74.4957733154",
                                                                                                                         "kilometers": "28648866",
@@ -17,6 +18,8 @@ RSpec.describe NasaNeo::CloseObj::Client do
                                                                              "is_potentially_hazardous_asteroid": false }]}}', headers: {'x-ratelimit-remaining' => 999})
     stub_request(:get, 'https://api.nasa.gov/neo/rest/v1/feed?start_date=19-04-08&end_date=19-04-08&detailed=false&api_key=DEMO_KEY')
       .to_return(status: [400, ""])
+    stub_request(:get, 'https://api.nasa.gov/neo/rest/v1/neo/123456?api_key=DEMO_KEY')
+      .to_return(status: 200, body: '{"neo_data": "neo_data"}')
   end
 
   let(:config) do
@@ -37,6 +40,12 @@ RSpec.describe NasaNeo::CloseObj::Client do
 
       it 'returns the error if no API call has been made' do
         expect(subject.calls_remaining).to eq({:error=>"make new API call first"})
+      end
+    end
+
+    describe '#neo_data_verbose' do
+      it 'returns the neo name' do
+        expect(subject.neo_data_verbose).to eq(JSON.parse('{"neo_data": "neo_data"}'))
       end
     end
 
@@ -62,6 +71,7 @@ RSpec.describe NasaNeo::CloseObj::Client do
       it 'stores the data information' do
         expect(subject.update).to eq(JSON.parse('{"element_count": 10,
                                                   "near_earth_objects":{"2019-04-08": [{"name": "neo name",
+                                                                                        "id": "123456",
                                                                                         "close_approach_data": [{"miss_distance": {"astronomical": "0.1915058335",
                                                                                                                                    "lunar": "74.4957733154",
                                                                                                                                    "kilometers": "28648866",
@@ -212,6 +222,7 @@ RSpec.describe NasaNeo::CloseObj::Client do
     describe '#neo_data' do
       it 'returns all data for closest near earth object' do
         expect(subject.neo_data).to eq(JSON.parse('{"name": "neo name",
+                                                    "id": "123456",
                                                     "close_approach_data": [{"miss_distance": {"astronomical": "0.1915058335",
                                                                                                "lunar": "74.4957733154",
                                                                                                "kilometers": "28648866",
