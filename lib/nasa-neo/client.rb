@@ -122,8 +122,8 @@ module NasaNeo
       end
 
       def retrieve_neo_verbose
+        @neo_id = retrieve_neo(NEO_ID_KEYS)
         if @full_url_neo != set_full_url_neo
-          @neo_id = retrieve_neo(NEO_ID_KEYS)
           @full_url_neo = set_full_url_neo
           @result_neo = JSON.parse(buffer_url(@full_url_neo))
         else
