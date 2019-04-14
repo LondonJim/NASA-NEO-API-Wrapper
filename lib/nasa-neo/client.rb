@@ -17,15 +17,27 @@ module NasaNeo
       MISS_DISTANCE_KEYS = ["close_approach_data", 0, "miss_distance"]
       VELOCITY_KEYS = ["close_approach_data", 0, "relative_velocity"]
 
-      attr_accessor :date, :key
+      attr_accessor :date
+      attr_reader :key
 
       def initialize(config)
         @config = config
+        @calls_remaining = nil
         @key = config.api_key
         @date = parsed_date
         @full_url = nil
         @result = nil
         @neo_position = 0
+      end
+
+      def key=(value)
+        @calls_remaining = nil
+        @key = value
+      end
+
+      def calls_remaining
+        @calls_remaining == nil ? error_feedback("make new API call first")
+                                : @calls_remaining
       end
 
       def estimated_diameter(measurement = nil, min_max = nil)
@@ -46,6 +58,10 @@ module NasaNeo
 
       def neo_data
         call_and_rescue { retrieve_neo }
+      end
+
+      def neo_data_verbose
+
       end
 
       def neo_total
@@ -71,7 +87,9 @@ module NasaNeo
       private
 
       def buffer_url
-        open(@full_url).read
+        api_data = open(@full_url)
+        @calls_remaining = api_data.meta['x-ratelimit-remaining'].to_i
+        api_data.read
       end
 
       def call_and_rescue
@@ -121,7 +139,7 @@ module NasaNeo
       end
 
       def set_full_url
-        "#{@config.host}?start_date=#{@date}&end_date=#{@date}&detailed=false&api_key=#{@key}"
+        "#{@config.host}/feed?start_date=#{@date}&end_date=#{@date}&detailed=false&api_key=#{@key}"
       end
 
     end

@@ -4,7 +4,7 @@ require "nasa-neo/version"
 
 Gem::Specification.new do |s|
   s.name        = 'nasa-neo'
-  s.version     = '1.3.4'
+  s.version     = '1.4.0'
   s.date        = '2019-04-09'
   s.summary     = "This gem provides a simple wrapper for https://api.nasa.gov/api.html#NeoWS API"
   s.description = "Retrieve information about the closest near earth objects on any given day using the NASA NEO API. "

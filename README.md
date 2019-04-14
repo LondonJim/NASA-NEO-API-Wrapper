@@ -36,14 +36,13 @@ client = NasaNeo::CloseObj.configure
 
 
 #### Set the API key
-
-(only needs to be done if you want to use your own API key, default setting is DEMO_KEY)
+The default setting is DEMO_KEY. This only needs to be set if you want to use your own API key.
 ```
 client.key = "MyKey"
 ```
 
 #### Change the date
-(only needs to be done if you want to select another date, default setting is the current day. Format: YYYY-MM-DD)
+Default setting is the current day, only needs to be set if you want another day. Format: YYYY-MM-DD)
 ```
 client.date = "2019-04-10"
 ```
@@ -55,7 +54,7 @@ client.update
 ```
 
 #### Select Near Earth Object
-Manually select a Near Earth Object for the date (if not a recognised number all data returned will be `nil`). Note: The default is the first (closest). To find the total number of Near Earth Objects recorded for the date see `Find the total Near Earth Objects recorded for the date` in the next section.
+Manually select a Near Earth Object for the date (if not a recognised number all data returned when methods are executed will be `nil`). Note: The intial set default is the first (closest). To find the total number of Near Earth Objects recorded for the date see `Find the total Near Earth Objects recorded for the date` in the next section.
 
 Example(selects 2nd closest Near Earth Object):
 ```
@@ -66,6 +65,16 @@ Please Note: If the date or key is changed the next method requesting informatio
 
 
 ### Retrieving Information
+
+#### Find the number of API calls remaining using current key
+```
+client.calls_remaining
+```
+Example return:
+```
+29
+```
+Note: If an API call has not been made yet then an error hash is returned (`{:error=>"make new API call first"}`) as the calls remaining data is returned in the header of the API call. If an API key is changed then again an API call will need to be made first to retrieve this information.
 
 #### Find the total Near Earth Objects recorded for the date
 
@@ -92,7 +101,7 @@ Example return:
 ```
 client.hazardous?
 ```
-Example return (hopefully):
+Example return:
 ```
 false
 ```
@@ -210,7 +219,7 @@ Returns:
 nil
 ```
 ---
-Example of return if numbered information not present outside year range, eg. if selected miss distance in miles of Near Earth Object is not present (applicable to #miss_distance and #velocity with valid arguments):
+Example of return if any information not present (would return nil for any of the methods attempting to retrieve information). It would most likely mean that it's outside the year range.
 ```
 client.date = "2400-01-01"
 client.miss_distance("miles")
@@ -218,6 +227,15 @@ client.miss_distance("miles")
 Returns:
 ```
 nil
+```
+---
+Example of return if method requesting the number of API calls left using the current key is made before any API calls are made.
+```
+client.calls_remaining
+```
+Returns:
+```
+{:error>=>"make new API call first"}
 ```
 
 

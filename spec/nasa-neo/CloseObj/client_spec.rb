@@ -14,7 +14,7 @@ RSpec.describe NasaNeo::CloseObj::Client do
                                                                                                     "meters": {"estimated_diameter_min": 183.8886720703, "estimated_diameter_max": 411.1875710413},
                                                                                                     "miles": {"estimated_diameter_min": 0.1142630881, "estimated_diameter_max": 0.2555000322},
                                                                                                     "feet": {"estimated_diameter_min": 603.309310875, "estimated_diameter_max": 1349.040630575}},
-                                                                             "is_potentially_hazardous_asteroid": false }]}}', headers: {})
+                                                                             "is_potentially_hazardous_asteroid": false }]}}', headers: {'x-ratelimit-remaining' => 999})
     stub_request(:get, 'https://api.nasa.gov/neo/rest/v1/feed?start_date=19-04-08&end_date=19-04-08&detailed=false&api_key=DEMO_KEY')
       .to_return(status: [400, ""])
   end
@@ -27,6 +27,17 @@ RSpec.describe NasaNeo::CloseObj::Client do
 
     before(:each) do
       subject.instance_variable_set(:@date, "2019-04-08")
+    end
+
+    describe '#calls_remaining' do
+      it 'returns the number of API calls remaining for key' do
+        subject.neo_data
+        expect(subject.calls_remaining).to eq(999)
+      end
+
+      it 'returns the error if no API call has been made' do
+        expect(subject.calls_remaining).to eq({:error=>"make new API call first"})
+      end
     end
 
     describe '#neo_total' do
