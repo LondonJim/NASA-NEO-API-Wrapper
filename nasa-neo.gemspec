@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/LondonJim/NASA-NEO-API-Wrapper'
   s.license     = 'MIT'
   s.metadata    = { "homepage_uri" => "https://github.com/LondonJim/NASA-NEO-API-Wrapper",
-                    "documentation_uri" => "https://www.rubydoc.info/github/LondonJim/NASA-NEO-API-Wrapper/master"
+                    "documentation_uri" => "https://www.rubydoc.info/github/LondonJim/NASA-NEO-API-Wrapper/master",
                     "changelog_uri" => "https://github.com/LondonJim/NASA-NEO-API-Wrapper/blob/master/CHANGELOG.md",
                     "source_code_uri" => "https://github.com/LondonJim/NASA-NEO-API-Wrapper"
                   }
