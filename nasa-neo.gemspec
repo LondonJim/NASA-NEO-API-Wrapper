@@ -4,7 +4,7 @@ require "nasa-neo/version"
 
 Gem::Specification.new do |s|
   s.name        = 'nasa-neo'
-  s.version     = '1.5.1'
+  s.version     = '1.5.2'
   s.date        = '2019-04-09'
   s.summary     = "This gem provides a simple wrapper for https://api.nasa.gov/api.html#NeoWS API"
   s.description = "Retrieve information about the closest near earth objects on any given day using the NASA NEO API. "
@@ -12,7 +12,10 @@ Gem::Specification.new do |s|
   s.email       = 'jrsutherland78@googlemail.com'
   s.homepage    = 'https://github.com/LondonJim/NASA-NEO-API-Wrapper'
   s.license     = 'MIT'
-  s.metadata    = { "changelog_uri" => "https://github.com/LondonJim/NASA-NEO-API-Wrapper/blob/master/CHANGELOG.md" }
+  s.metadata    = { "homepage_uri" => "https://github.com/LondonJim/NASA-NEO-API-Wrapper",
+                    "changelog_uri" => "https://github.com/LondonJim/NASA-NEO-API-Wrapper/blob/master/CHANGELOG.md",
+                    "source_code_uri" => "https://github.com/LondonJim/NASA-NEO-API-Wrapper"
+                  }
 
   s.files         = Dir.chdir(File.expand_path('..', __FILE__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
