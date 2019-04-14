@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.5.3] - 2018-04-14
+
+### Added
+
+- Updated gemspec meta information to include documentation link
+
 ## [1.5.2] - 2018-04-14
 
 ### Added
