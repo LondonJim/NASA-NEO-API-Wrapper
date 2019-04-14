@@ -4,7 +4,7 @@ require "nasa-neo/version"
 
 Gem::Specification.new do |s|
   s.name        = 'nasa-neo'
-  s.version     = '1.5.2'
+  s.version     = '1.5.3'
   s.date        = '2019-04-09'
   s.summary     = "This gem provides a simple wrapper for https://api.nasa.gov/api.html#NeoWS API"
   s.description = "Retrieve information about the closest near earth objects on any given day using the NASA NEO API. "
@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/LondonJim/NASA-NEO-API-Wrapper'
   s.license     = 'MIT'
   s.metadata    = { "homepage_uri" => "https://github.com/LondonJim/NASA-NEO-API-Wrapper",
+                    "documentation_uri" => "https://www.rubydoc.info/github/LondonJim/NASA-NEO-API-Wrapper/master"
                     "changelog_uri" => "https://github.com/LondonJim/NASA-NEO-API-Wrapper/blob/master/CHANGELOG.md",
                     "source_code_uri" => "https://github.com/LondonJim/NASA-NEO-API-Wrapper"
                   }
