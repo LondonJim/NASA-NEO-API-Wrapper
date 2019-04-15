@@ -6,12 +6,13 @@ Gem::Specification.new do |s|
   s.name        = 'nasa-neo'
   s.version     = '1.5.3'
   s.date        = '2019-04-09'
-  s.summary     = "This gem provides a simple wrapper for https://api.nasa.gov/api.html#NeoWS API"
-  s.description = "Retrieve information about the closest near earth objects on any given day using the NASA NEO API. "
+  s.summary     = "This gem provides a wrapper for https://api.nasa.gov/api.html#NeoWS API"
+  s.description = "Retrieve information about Asteroids (Near Earth Objects) based on their closest approach date to Earth on any given day using the NASA NEO API. "
   s.authors     = ["James Sutherland"]
   s.email       = 'jrsutherland78@googlemail.com'
   s.homepage    = 'https://github.com/LondonJim/NASA-NEO-API-Wrapper'
   s.license     = 'MIT'
+  s.required_ruby_version = '>= 2.3.1'
   s.metadata    = { "homepage_uri" => "https://github.com/LondonJim/NASA-NEO-API-Wrapper",
                     "documentation_uri" => "https://www.rubydoc.info/github/LondonJim/NASA-NEO-API-Wrapper/master",
                     "changelog_uri" => "https://github.com/LondonJim/NASA-NEO-API-Wrapper/blob/master/CHANGELOG.md",

@@ -1,6 +1,6 @@
 # NASA Near Earth Object API Wrapper
 
-Gives details Near Earth Objects of the day (or set date) based on their closest approach date to Earth. All Near Earth Objects can now be individually selected. Currently the NEO API only holds data from 1900 to 2200, any requests for information outside these years will return nil. Data is also limited to encounters with reasonably low uncertainty.
+Gives details of Asteroids (Near Earth Objects) of the day (or set date) based on their closest approach date to Earth. All Near Earth Objects can now be individually selected. Currently the NEO API only holds data from 1900AD to 2200AD, any requests for information outside these years will return nil. Data is also limited to encounters with reasonably low uncertainty.
 
 ## Installation
 
