@@ -1,10 +1,8 @@
 # NASA Near Earth Object API Wrapper
 
-Gives details on the closest Near Earth Objects of the day. All Near Earth Objects can now be individually selected. Currently the NEO API only holds data from 1900 to 2200, any requests for information outside these years will return nil. Data is also limited to encounters with reasonably low uncertainty.
+Gives details Near Earth Objects of the day (or set date) based on their closest approach date to Earth. All Near Earth Objects can now be individually selected. Currently the NEO API only holds data from 1900 to 2200, any requests for information outside these years will return nil. Data is also limited to encounters with reasonably low uncertainty.
 
 ## Installation
-
-Written using `Ruby 2.6.1`
 
 Add this line to your application's Gemfile:
 
