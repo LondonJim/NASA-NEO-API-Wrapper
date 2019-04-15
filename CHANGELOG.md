@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.4] - 2018-04-14
+
+### Added
+
+- Updated gemspec meta information to include required Ruby version to 2.3.1
+- Updated README.md description
+
 ## [1.5.3] - 2018-04-14
 
 ### Added
