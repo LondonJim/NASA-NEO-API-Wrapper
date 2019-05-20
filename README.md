@@ -2,6 +2,8 @@
 
 Gives details of Asteroids (Near Earth Objects) of the day (or set date) based on their closest approach date to Earth. All Near Earth Objects can now be individually selected. Currently the NEO API only holds data from 1900AD to 2200AD, any requests for information outside these years will return nil. Data is also limited to encounters with reasonably low uncertainty.
 
+gem is available here: https://rubygems.org/gems/nasa-neo
+
 ## Installation
 
 Add this line to your application's Gemfile:
